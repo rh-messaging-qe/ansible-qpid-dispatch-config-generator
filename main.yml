@@ -14,9 +14,11 @@
 ---
 - name: Include generated variables
   hosts: all
+  vars:
+    - main_vars: vars/main.yml
   tasks:
     - include_vars:
-        file: vars/main.yml
+        file: "{{ main_vars }}"
     - include_vars:
         file: "{{ router_vars }}"
 

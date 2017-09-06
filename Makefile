@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-all: generate
+all: generate clean
 
 generate:
 		ansible-playbook -i inventory/ main.yml
 
 clean:
 		rm -rf ansible.cfg templates/ vars/vars*.yml *.retry
-	
