@@ -11,30 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
----
-- name: Include generated variables
-  hosts: all
-  vars:
-    - main_vars: vars/main.yml
-  tasks:
-    - include_vars:
-        file: "{{ main_vars }}"
-    - include_vars:
-        file: "{{ router_vars }}"
 
 - name: Create dir for routers config file
-  hosts: localhost
-  tasks:
-    - include: tasks/settings.yml
-
-- name: Generate config files
-  hosts: routers
-  tasks:
-    - include: tasks/generate.yml
+  file:
+    path: "{{ template_path }}"
+    state: directory
+    mode: 0755
+  when: clear_mess is undefined
 
 - name: Clear jinja2 template from localhost
-  hosts: localhost
-  tasks:
-    - include: tasks/settings.yml
-      vars:
-        clear_mess: true
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ router_vars }}"
+    - "{{ template_path }}"
+  when: clear_mess is defined

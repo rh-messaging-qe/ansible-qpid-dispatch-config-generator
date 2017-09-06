@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ---
+# TODO - uncomment after complete generator development
+# - name: Run generator for create jinja2 templates on remote nodes
+#   pip:
+#     name: generate
+
 - name: Fetch jinja2 template from remote hosts
   fetch:
     src: "{{ template_file_remote }}"
@@ -19,9 +24,15 @@
     flat: yes
     fail_on_missing: yes
 
+- name: Clear jinja2 template from remote hosts
+  file:
+    path: "{{ template_file_remote }}"
+    state: absent
+
 - name: Create router config file from template
   template:
     src: "{{ template_path }}/{{ template_file }}"
+    # TODO - set proper desetination
     # dest: "/etc/{{ router_daemon_implementation }}/qdrouterd.conf"
     dest: /root/test.out
     owner: root

@@ -18,4 +18,4 @@ generate:
 		ansible-playbook -i inventory/ main.yml
 
 clean:
-		rm -rf ansible.cfg templates/ vars/vars*.yml *.retry
+		rm -rf ansible.cfg *.retry
