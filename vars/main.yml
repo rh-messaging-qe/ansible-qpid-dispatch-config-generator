@@ -1,0 +1,11 @@
+template_path: templates
+template_file_remote: "/tmp/qdrouterd-{{ inventory_hostname }}.conf.j2"
+template_file: "qdrouterd-{{ inventory_hostname }}.conf.j2"
+
+variable_file_remote: "/tmp/vars-{{ inventory_hostname }}.yml"
+variable_file: "vars/vars-{{ inventory_hostname }}.yml"
+
+router_daemon_implementation: qpid-dispatch
+
+router_vars: /tmp/router_vars.yml
+ansible_vars: vars/main.yml
