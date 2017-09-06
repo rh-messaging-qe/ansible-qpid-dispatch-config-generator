@@ -25,7 +25,7 @@
 - name: Create dir for routers config file
   hosts: localhost
   tasks:
-    - include: tasks/settings.yml
+    - include: tasks/prepare-clean.yml
 
 - name: Generate config files
   hosts: routers
@@ -35,6 +35,6 @@
 - name: Clear jinja2 template from localhost
   hosts: localhost
   tasks:
-    - include: tasks/settings.yml
+    - include: tasks/prepare-clean.yml
       vars:
         clear_mess: true
