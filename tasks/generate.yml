@@ -32,9 +32,9 @@
 - name: Create router config file from template
   template:
     src: "{{ template_path }}/{{ template_file }}"
-    # TODO - set proper desetination
-    # dest: "/etc/{{ router_daemon_implementation }}/qdrouterd.conf"
-    dest: /root/test.out
+    dest: "{{ config_path }}/qdrouterd.conf"
     owner: root
     group: root
     mode: 0755
+  with_items: "{{ confs }}"
+  when: item.machine == inventory_hostname
