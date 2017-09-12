@@ -1,0 +1,60 @@
+# Copyright 2017 Red Hat, Inc. and/or its affiliates
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+- name: Bring up docker containers
+  hosts: localhost
+  roles:
+    - role: provision_docker
+      provision_docker_inventory_group: "{{ groups['routers'] }}"
+      provision_docker_privileged: true
+
+- name: Include generated variables
+  hosts: all
+  tasks:
+    - include_vars:
+        file: "vars/routers_vars.yml"
+
+- name: Create router config file from template
+  hosts: routers
+  tasks:
+    - name: Create config files
+      vars:
+        template_path: templates
+        template_file: qdrouterd-{{ inventory_hostname }}.conf.j2
+        config_path: /tmp
+        config_file: qdrouterd-{{ inventory_hostname }}.conf
+      include: ../tasks/generate.yml
+
+    - name: Fetch config files to localhost
+      fetch:
+        src: "/tmp/qdrouterd-{{ inventory_hostname }}.conf"
+        dest: "/tmp/qdrouterd-{{ inventory_hostname }}.conf"
+        flat: yes
+        fail_on_missing: yes
+
+- name: Compare generated files
+  hosts: localhost
+  tasks:
+    - name: Trim white characters
+      vars:
+        config_path: /tmp
+        config_file: qdrouterd-*.conf
+      include: ../tasks/trim.yml
+
+    - name: Diff files
+      command: diff /tmp/qdrouterd-{{ item }}.conf ref_out/qdrouterd-{{ item }}.conf
+      register: diff_files
+      with_items:
+        - roland
+        - alain

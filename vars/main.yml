@@ -20,6 +20,7 @@ template_file: "qdrouterd-{{ inventory_hostname }}.conf.j2"
 
 router_daemon_implementation: qpid-dispatch
 config_path: "/etc/{{ router_daemon_implementation }}"
+config_file: "qdrouterd.conf"
 
 variable_file_remote: "/tmp/vars-{{ inventory_hostname }}.yml"
 variable_file: "vars/vars-{{ inventory_hostname }}.yml"

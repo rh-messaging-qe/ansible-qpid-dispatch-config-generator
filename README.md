@@ -1,6 +1,6 @@
 # ansible-qpid-dispatch-config-generator
 
-Play for generate config files for routers from remote-generated jinja2 files.
+Play for generate config files for routers from remote-generated jinja2 files. - fork
 
 ## Hosts
 

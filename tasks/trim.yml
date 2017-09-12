@@ -12,30 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ---
-- name: Include generated variables
-  hosts: all
-  vars:
-    - main_vars: vars/main.yml
-  tasks:
-    - include_vars:
-        file: "{{ main_vars }}"
-    - include_vars:
-        file: "{{ router_vars }}"
-
-- name: Create dir for routers config file
-  hosts: localhost
-  tasks:
-    - include: tasks/prepare-clean.yml
-
-- name: Generate config files
-  hosts: routers
-  tasks:
-    - include: tasks/fetch.yml
-    - include: tasks/generate.yml
-
-- name: Clear jinja2 template from localhost
-  hosts: localhost
-  tasks:
-    - include: tasks/prepare-clean.yml
-      vars:
-        clear_mess: true
+- name: Trim blank lines
+  replace:
+    path: '{{ item }}'
+    regexp: '^\s*$'
+    replace: ''
+    backup: yes
+  with_fileglob:
+      - '{{ config_path }}/{{ config_file }}'
+- name: Trim blank lines v2
+  replace:
+    path: '{{ item }}'
+    regexp: '\n\n'
+    replace: '\n'
+    backup: yes
+  with_fileglob:
+      - '{{ config_path }}/{{ config_file }}'
+- name: Add newline after end of component
+  replace:
+    path: '{{ item }}'
+    regexp: '\}'
+    replace: '}\n'
+    backup: yes
+  with_fileglob:
+      - '{{ config_path }}/{{ config_file }}'

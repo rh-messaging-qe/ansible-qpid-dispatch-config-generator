@@ -11,31 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
----
-- name: Include generated variables
-  hosts: all
-  vars:
-    - main_vars: vars/main.yml
-  tasks:
-    - include_vars:
-        file: "{{ main_vars }}"
-    - include_vars:
-        file: "{{ router_vars }}"
 
-- name: Create dir for routers config file
-  hosts: localhost
-  tasks:
-    - include: tasks/prepare-clean.yml
+# Make for run instlal and config on localhost
 
-- name: Generate config files
-  hosts: routers
-  tasks:
-    - include: tasks/fetch.yml
-    - include: tasks/generate.yml
+all: install clean
 
-- name: Clear jinja2 template from localhost
-  hosts: localhost
-  tasks:
-    - include: tasks/prepare-clean.yml
-      vars:
-        clear_mess: true
+install:
+		printf '[defaults]\nroles_path=roles/' > ansible.cfg
+		ansible-galaxy install -r requirements.yml -p roles/
+		ansible-playbook -i hosts test_main.yml
+
+clean:
+		rm -rf ansible.cfg
+		rm -rf roles/*
+		rm -rf *.retry
