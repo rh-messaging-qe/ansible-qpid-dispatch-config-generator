@@ -22,20 +22,20 @@
     - include_vars:
         file: "{{ router_vars }}"
 
-- name: Create dir for routers config file
-  hosts: localhost
-  tasks:
-    - include: tasks/prepare-clean.yml
+# - name: Create dir for routers config file
+#   hosts: localhost
+#   tasks:
+#     - include: tasks/prepare-clean.yml
 
 - name: Generate config files
   hosts: routers
   tasks:
-    - include: tasks/fetch.yml
+    # - include: tasks/fetch.yml
     - include: tasks/generate.yml
 
-- name: Clear jinja2 template from localhost
-  hosts: localhost
-  tasks:
-    - include: tasks/prepare-clean.yml
-      vars:
-        clear_mess: true
+# - name: Clear jinja2 template from localhost
+#   hosts: localhost
+#   tasks:
+#     - include: tasks/prepare-clean.yml
+#       vars:
+#         clear_mess: true

@@ -14,9 +14,7 @@
 
 # main file for ansible variables
 
-template_path: templates
-template_file_remote: "/tmp/qdrouterd-{{ inventory_hostname }}.conf.j2"
-template_file: "qdrouterd-{{ inventory_hostname }}.conf.j2"
+template_path: vars/qdrouterd.conf.j2
 
 router_daemon_implementation: qpid-dispatch
 config_path: "/etc/{{ router_daemon_implementation }}"

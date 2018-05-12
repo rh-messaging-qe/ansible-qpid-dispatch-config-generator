@@ -14,7 +14,7 @@
 ---
 - name: Create router config file from template
   template:
-    src: "{{ template_path }}/{{ template_file }}"
+    src: "{{ template_path }}"
     dest: "{{ config_path }}/{{ config_file }}"
     owner: root
     group: root
